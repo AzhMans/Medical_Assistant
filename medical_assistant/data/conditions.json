@@ -1,0 +1,303 @@
+{
+  "conditions": [
+    {
+      "id": 1, "name": "Common Cold", "specialist": "General Practitioner",
+      "tests": [], "severity": "mild",
+      "symptoms": ["runny_nose", "sore_throat", "sneezing", "mild_fever", "cough", "fatigue"]
+    },
+    {
+      "id": 2, "name": "Influenza", "specialist": "General Practitioner",
+      "tests": ["CBC"],
+      "severity": "moderate",
+      "symptoms": ["high_fever", "body_aches", "fatigue", "cough", "headache", "chills", "sore_throat"]
+    },
+    {
+      "id": 3, "name": "COVID-19", "specialist": "Infectious Disease Specialist",
+      "tests": ["PCR test", "CBC", "CRP"],
+      "severity": "moderate",
+      "symptoms": ["fever", "cough", "fatigue", "loss_of_smell", "loss_of_taste", "shortness_of_breath", "body_aches"]
+    },
+    {
+      "id": 4, "name": "Pneumonia", "specialist": "Pulmonologist",
+      "tests": ["chest X-ray", "CBC", "blood culture"],
+      "severity": "severe",
+      "symptoms": ["high_fever", "cough", "chest_pain", "shortness_of_breath", "fatigue", "chills"]
+    },
+    {
+      "id": 5, "name": "Bronchitis", "specialist": "Pulmonologist",
+      "tests": ["chest X-ray", "CBC"],
+      "severity": "moderate",
+      "symptoms": ["cough", "mucus", "fatigue", "mild_fever", "chest_discomfort", "shortness_of_breath"]
+    },
+    {
+      "id": 6, "name": "Asthma", "specialist": "Pulmonologist",
+      "tests": ["spirometry", "peak flow test"],
+      "severity": "moderate",
+      "symptoms": ["wheezing", "shortness_of_breath", "chest_tightness", "cough", "difficulty_breathing"]
+    },
+    {
+      "id": 7, "name": "Hypertension", "specialist": "Cardiologist",
+      "tests": ["blood pressure monitoring", "ECG", "renal function test"],
+      "severity": "moderate",
+      "symptoms": ["headache", "dizziness", "blurred_vision", "chest_pain", "shortness_of_breath", "nosebleed"]
+    },
+    {
+      "id": 8, "name": "Coronary Artery Disease", "specialist": "Cardiologist",
+      "tests": ["ECG", "stress test", "coronary angiography", "CBC"],
+      "severity": "severe",
+      "symptoms": ["chest_pain", "shortness_of_breath", "fatigue", "palpitations", "dizziness"]
+    },
+    {
+      "id": 9, "name": "Arrhythmia", "specialist": "Cardiologist",
+      "tests": ["ECG", "Holter monitor", "echocardiogram"],
+      "severity": "moderate",
+      "symptoms": ["palpitations", "dizziness", "shortness_of_breath", "chest_pain", "fainting"]
+    },
+    {
+      "id": 10, "name": "Heart Failure", "specialist": "Cardiologist",
+      "tests": ["ECG", "echocardiogram", "BNP blood test", "chest X-ray"],
+      "severity": "severe",
+      "symptoms": ["shortness_of_breath", "fatigue", "swollen_legs", "rapid_heartbeat", "cough", "dizziness"]
+    },
+    {
+      "id": 11, "name": "Type 2 Diabetes", "specialist": "Endocrinologist",
+      "tests": ["fasting blood glucose", "HbA1c", "urine test"],
+      "severity": "moderate",
+      "symptoms": ["frequent_urination", "excessive_thirst", "fatigue", "blurred_vision", "slow_healing", "weight_loss"]
+    },
+    {
+      "id": 12, "name": "Hypothyroidism", "specialist": "Endocrinologist",
+      "tests": ["TSH", "T3", "T4"],
+      "severity": "moderate",
+      "symptoms": ["fatigue", "weight_gain", "cold_intolerance", "dry_skin", "constipation", "depression", "hair_loss"]
+    },
+    {
+      "id": 13, "name": "Hyperthyroidism", "specialist": "Endocrinologist",
+      "tests": ["TSH", "T3", "T4", "thyroid ultrasound"],
+      "severity": "moderate",
+      "symptoms": ["weight_loss", "rapid_heartbeat", "anxiety", "tremors", "sweating", "heat_intolerance", "fatigue"]
+    },
+    {
+      "id": 14, "name": "Anemia", "specialist": "Hematologist",
+      "tests": ["CBC", "iron panel", "ferritin", "B12", "folate"],
+      "severity": "moderate",
+      "symptoms": ["fatigue", "pale_skin", "shortness_of_breath", "dizziness", "cold_hands", "headache", "chest_pain"]
+    },
+    {
+      "id": 15, "name": "Gastritis", "specialist": "Gastroenterologist",
+      "tests": ["H. pylori test", "endoscopy", "blood test"],
+      "severity": "mild",
+      "symptoms": ["stomach_pain", "nausea", "vomiting", "bloating", "loss_of_appetite", "indigestion"]
+    },
+    {
+      "id": 16, "name": "GERD", "specialist": "Gastroenterologist",
+      "tests": ["endoscopy", "pH monitoring"],
+      "severity": "mild",
+      "symptoms": ["heartburn", "acid_reflux", "chest_pain", "regurgitation", "difficulty_swallowing", "cough"]
+    },
+    {
+      "id": 17, "name": "Irritable Bowel Syndrome", "specialist": "Gastroenterologist",
+      "tests": ["colonoscopy", "stool test"],
+      "severity": "mild",
+      "symptoms": ["abdominal_pain", "bloating", "diarrhea", "constipation", "mucus_in_stool", "cramping"]
+    },
+    {
+      "id": 18, "name": "Appendicitis", "specialist": "Surgeon",
+      "tests": ["ultrasound", "CT scan", "CBC"],
+      "severity": "severe",
+      "symptoms": ["severe_abdominal_pain", "nausea", "vomiting", "fever", "loss_of_appetite", "rebound_tenderness"]
+    },
+    {
+      "id": 19, "name": "Kidney Stones", "specialist": "Urologist",
+      "tests": ["urine test", "CT scan", "ultrasound", "blood test"],
+      "severity": "moderate",
+      "symptoms": ["severe_back_pain", "side_pain", "painful_urination", "blood_in_urine", "nausea", "vomiting"]
+    },
+    {
+      "id": 20, "name": "Urinary Tract Infection", "specialist": "Urologist",
+      "tests": ["urine test", "urine culture"],
+      "severity": "mild",
+      "symptoms": ["painful_urination", "frequent_urination", "urgency", "cloudy_urine", "pelvic_pain", "fever"]
+    },
+    {
+      "id": 21, "name": "Chronic Kidney Disease", "specialist": "Nephrologist",
+      "tests": ["creatinine", "eGFR", "urine albumin", "BMP"],
+      "severity": "severe",
+      "symptoms": ["fatigue", "swollen_legs", "shortness_of_breath", "nausea", "frequent_urination", "back_pain"]
+    },
+    {
+      "id": 22, "name": "Migraine", "specialist": "Neurologist",
+      "tests": ["MRI", "CT scan"],
+      "severity": "moderate",
+      "symptoms": ["severe_headache", "nausea", "vomiting", "light_sensitivity", "sound_sensitivity", "aura"]
+    },
+    {
+      "id": 23, "name": "Tension Headache", "specialist": "General Practitioner",
+      "tests": [],
+      "severity": "mild",
+      "symptoms": ["headache", "neck_pain", "scalp_tenderness", "pressure_around_head", "fatigue"]
+    },
+    {
+      "id": 24, "name": "Depression", "specialist": "Psychiatrist",
+      "tests": ["psychological evaluation", "thyroid test"],
+      "severity": "moderate",
+      "symptoms": ["sadness", "fatigue", "loss_of_interest", "sleep_changes", "appetite_changes", "concentration_problems", "hopelessness"]
+    },
+    {
+      "id": 25, "name": "Anxiety Disorder", "specialist": "Psychiatrist",
+      "tests": ["psychological evaluation"],
+      "severity": "moderate",
+      "symptoms": ["excessive_worry", "restlessness", "fatigue", "difficulty_concentrating", "muscle_tension", "sleep_problems", "palpitations"]
+    },
+    {
+      "id": 26, "name": "Osteoarthritis", "specialist": "Rheumatologist",
+      "tests": ["X-ray", "MRI", "joint fluid test"],
+      "severity": "moderate",
+      "symptoms": ["joint_pain", "stiffness", "swelling", "reduced_range_of_motion", "crepitus", "tenderness"]
+    },
+    {
+      "id": 27, "name": "Rheumatoid Arthritis", "specialist": "Rheumatologist",
+      "tests": ["RF test", "anti-CCP", "CBC", "CRP", "X-ray"],
+      "severity": "moderate",
+      "symptoms": ["joint_pain", "joint_swelling", "morning_stiffness", "fatigue", "fever", "weight_loss"]
+    },
+    {
+      "id": 28, "name": "Gout", "specialist": "Rheumatologist",
+      "tests": ["uric acid blood test", "joint fluid test", "X-ray"],
+      "severity": "moderate",
+      "symptoms": ["sudden_joint_pain", "joint_swelling", "redness", "warmth", "limited_range_of_motion"]
+    },
+    {
+      "id": 29, "name": "Psoriasis", "specialist": "Dermatologist",
+      "tests": ["skin biopsy"],
+      "severity": "mild",
+      "symptoms": ["red_patches", "dry_skin", "itching", "burning", "thickened_nails", "joint_pain"]
+    },
+    {
+      "id": 30, "name": "Eczema", "specialist": "Dermatologist",
+      "tests": ["patch test", "skin biopsy"],
+      "severity": "mild",
+      "symptoms": ["itching", "dry_skin", "red_rash", "swelling", "oozing", "cracked_skin"]
+    },
+    {
+      "id": 31, "name": "Allergic Rhinitis", "specialist": "Allergist",
+      "tests": ["skin prick test", "IgE blood test"],
+      "severity": "mild",
+      "symptoms": ["runny_nose", "sneezing", "itchy_eyes", "nasal_congestion", "watery_eyes", "cough"]
+    },
+    {
+      "id": 32, "name": "Food Allergy", "specialist": "Allergist",
+      "tests": ["skin prick test", "IgE blood test", "oral food challenge"],
+      "severity": "moderate",
+      "symptoms": ["hives", "swelling", "nausea", "vomiting", "abdominal_pain", "difficulty_breathing"]
+    },
+    {
+      "id": 33, "name": "Celiac Disease", "specialist": "Gastroenterologist",
+      "tests": ["tTG-IgA", "endoscopy", "genetic test"],
+      "severity": "moderate",
+      "symptoms": ["diarrhea", "bloating", "abdominal_pain", "fatigue", "weight_loss", "anemia", "rash"]
+    },
+    {
+      "id": 34, "name": "Hepatitis", "specialist": "Hepatologist",
+      "tests": ["liver function tests", "hepatitis panel", "ultrasound"],
+      "severity": "severe",
+      "symptoms": ["jaundice", "fatigue", "abdominal_pain", "nausea", "dark_urine", "loss_of_appetite"]
+    },
+    {
+      "id": 35, "name": "Gallstones", "specialist": "Gastroenterologist",
+      "tests": ["ultrasound", "CT scan", "liver function tests"],
+      "severity": "moderate",
+      "symptoms": ["upper_right_abdominal_pain", "nausea", "vomiting", "back_pain", "fever", "jaundice"]
+    },
+    {
+      "id": 36, "name": "Pancreatitis", "specialist": "Gastroenterologist",
+      "tests": ["amylase", "lipase", "CT scan", "ultrasound"],
+      "severity": "severe",
+      "symptoms": ["severe_upper_abdominal_pain", "nausea", "vomiting", "fever", "rapid_heartbeat", "tenderness"]
+    },
+    {
+      "id": 37, "name": "Stroke / TIA", "specialist": "Neurologist",
+      "tests": ["CT scan", "MRI", "carotid ultrasound", "ECG"],
+      "severity": "severe",
+      "symptoms": ["sudden_weakness", "facial_drooping", "speech_difficulty", "vision_problems", "severe_headache", "dizziness"]
+    },
+    {
+      "id": 38, "name": "Multiple Sclerosis", "specialist": "Neurologist",
+      "tests": ["MRI", "spinal fluid test", "evoked potential test"],
+      "severity": "severe",
+      "symptoms": ["fatigue", "vision_problems", "numbness", "muscle_weakness", "coordination_problems", "cognitive_changes"]
+    },
+    {
+      "id": 39, "name": "Epilepsy", "specialist": "Neurologist",
+      "tests": ["EEG", "MRI", "CT scan", "blood test"],
+      "severity": "severe",
+      "symptoms": ["seizures", "temporary_confusion", "staring_spells", "loss_of_consciousness", "uncontrolled_movements"]
+    },
+    {
+      "id": 40, "name": "Parkinson's Disease", "specialist": "Neurologist",
+      "tests": ["DaTscan", "MRI", "neurological exam"],
+      "severity": "severe",
+      "symptoms": ["tremors", "slowed_movement", "rigid_muscles", "balance_problems", "speech_changes", "writing_changes"]
+    },
+    {
+      "id": 41, "name": "Osteoporosis", "specialist": "Endocrinologist",
+      "tests": ["DEXA scan", "calcium", "vitamin D", "bone markers"],
+      "severity": "moderate",
+      "symptoms": ["back_pain", "height_loss", "stooped_posture", "bone_fractures", "fragile_bones"]
+    },
+    {
+      "id": 42, "name": "Iron Deficiency", "specialist": "General Practitioner",
+      "tests": ["CBC", "ferritin", "iron panel", "TIBC"],
+      "severity": "mild",
+      "symptoms": ["fatigue", "pale_skin", "cold_hands", "brittle_nails", "hair_loss", "dizziness", "headache"]
+    },
+    {
+      "id": 43, "name": "Vitamin B12 Deficiency", "specialist": "General Practitioner",
+      "tests": ["B12 level", "CBC", "MMA", "homocysteine"],
+      "severity": "mild",
+      "symptoms": ["fatigue", "numbness", "tingling", "memory_problems", "mood_changes", "pale_skin", "balance_problems"]
+    },
+    {
+      "id": 44, "name": "Vitamin D Deficiency", "specialist": "General Practitioner",
+      "tests": ["25-OH vitamin D", "calcium", "PTH"],
+      "severity": "mild",
+      "symptoms": ["fatigue", "bone_pain", "muscle_weakness", "depression", "back_pain", "hair_loss", "slow_healing"]
+    },
+    {
+      "id": 45, "name": "Polycystic Ovary Syndrome", "specialist": "Gynecologist",
+      "tests": ["hormone panel", "ultrasound", "glucose test"],
+      "severity": "moderate",
+      "symptoms": ["irregular_periods", "weight_gain", "acne", "hair_loss", "excess_hair", "fatigue", "mood_changes"]
+    },
+    {
+      "id": 46, "name": "Endometriosis", "specialist": "Gynecologist",
+      "tests": ["ultrasound", "laparoscopy", "MRI"],
+      "severity": "moderate",
+      "symptoms": ["pelvic_pain", "painful_periods", "pain_during_sex", "heavy_bleeding", "fatigue", "bloating"]
+    },
+    {
+      "id": 47, "name": "Benign Prostatic Hyperplasia", "specialist": "Urologist",
+      "tests": ["PSA test", "digital rectal exam", "ultrasound"],
+      "severity": "moderate",
+      "symptoms": ["frequent_urination", "urgency", "weak_urine_stream", "incomplete_bladder_emptying", "nocturia"]
+    },
+    {
+      "id": 48, "name": "Sleep Apnea", "specialist": "Pulmonologist",
+      "tests": ["polysomnography", "home sleep test"],
+      "severity": "moderate",
+      "symptoms": ["loud_snoring", "gasping_during_sleep", "morning_headache", "daytime_sleepiness", "fatigue", "irritability"]
+    },
+    {
+      "id": 49, "name": "Lupus", "specialist": "Rheumatologist",
+      "tests": ["ANA test", "anti-dsDNA", "CBC", "urine test", "complement levels"],
+      "severity": "severe",
+      "symptoms": ["butterfly_rash", "fatigue", "joint_pain", "fever", "hair_loss", "sensitivity_to_light", "chest_pain"]
+    },
+    {
+      "id": 50, "name": "Chronic Fatigue Syndrome", "specialist": "General Practitioner",
+      "tests": ["CBC", "thyroid test", "metabolic panel", "sleep study"],
+      "severity": "moderate",
+      "symptoms": ["severe_fatigue", "post_exertional_malaise", "sleep_problems", "cognitive_impairment", "muscle_pain", "headache"]
+    }
+  ]
+}

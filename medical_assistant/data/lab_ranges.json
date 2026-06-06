@@ -1,0 +1,208 @@
+{
+  "lab_tests": [
+    {
+      "name": "Hemoglobin",
+      "unit": "g/dL",
+      "ranges": {
+        "male":   { "low": 13.5, "high": 17.5 },
+        "female": { "low": 12.0, "high": 15.5 }
+      },
+      "low_concern": "Anemia, iron deficiency, B12 deficiency, chronic disease",
+      "high_concern": "Polycythemia, dehydration, lung disease"
+    },
+    {
+      "name": "WBC",
+      "unit": "10^3/uL",
+      "ranges": {
+        "general": { "low": 4.5, "high": 11.0 }
+      },
+      "low_concern": "Bone marrow problem, viral infection, autoimmune disease",
+      "high_concern": "Infection, inflammation, leukemia"
+    },
+    {
+      "name": "Platelets",
+      "unit": "10^3/uL",
+      "ranges": {
+        "general": { "low": 150, "high": 400 }
+      },
+      "low_concern": "Bleeding risk, ITP, bone marrow disorder",
+      "high_concern": "Clotting risk, inflammation, iron deficiency"
+    },
+    {
+      "name": "Glucose (Fasting)",
+      "unit": "mg/dL",
+      "ranges": {
+        "general": { "low": 70, "high": 99 }
+      },
+      "low_concern": "Hypoglycemia, insulin overdose, liver disease",
+      "high_concern": "Diabetes, prediabetes, stress hyperglycemia"
+    },
+    {
+      "name": "HbA1c",
+      "unit": "%",
+      "ranges": {
+        "general": { "low": 4.0, "high": 5.6 }
+      },
+      "low_concern": "Hemolytic anemia, blood loss",
+      "high_concern": "Diabetes (>=6.5%), prediabetes (5.7-6.4%)"
+    },
+    {
+      "name": "Creatinine",
+      "unit": "mg/dL",
+      "ranges": {
+        "male":   { "low": 0.74, "high": 1.35 },
+        "female": { "low": 0.59, "high": 1.04 }
+      },
+      "low_concern": "Muscle wasting, low muscle mass",
+      "high_concern": "Kidney disease, dehydration, muscle breakdown"
+    },
+    {
+      "name": "eGFR",
+      "unit": "mL/min/1.73m2",
+      "ranges": {
+        "general": { "low": 60, "high": 120 }
+      },
+      "low_concern": "Chronic kidney disease (stages based on value)",
+      "high_concern": "Usually not clinically concerning if high"
+    },
+    {
+      "name": "Sodium",
+      "unit": "mEq/L",
+      "ranges": {
+        "general": { "low": 136, "high": 145 }
+      },
+      "low_concern": "Hyponatremia: heart failure, kidney disease, SIADH",
+      "high_concern": "Hypernatremia: dehydration, diabetes insipidus"
+    },
+    {
+      "name": "Potassium",
+      "unit": "mEq/L",
+      "ranges": {
+        "general": { "low": 3.5, "high": 5.0 }
+      },
+      "low_concern": "Hypokalemia: muscle weakness, arrhythmia risk",
+      "high_concern": "Hyperkalemia: kidney disease, arrhythmia risk"
+    },
+    {
+      "name": "TSH",
+      "unit": "mIU/L",
+      "ranges": {
+        "general": { "low": 0.4, "high": 4.0 }
+      },
+      "low_concern": "Hyperthyroidism, excess thyroid hormone",
+      "high_concern": "Hypothyroidism, thyroid underactivity"
+    },
+    {
+      "name": "T4 (Free)",
+      "unit": "ng/dL",
+      "ranges": {
+        "general": { "low": 0.8, "high": 1.8 }
+      },
+      "low_concern": "Hypothyroidism",
+      "high_concern": "Hyperthyroidism"
+    },
+    {
+      "name": "ALT",
+      "unit": "U/L",
+      "ranges": {
+        "male":   { "low": 7, "high": 56 },
+        "female": { "low": 7, "high": 45 }
+      },
+      "low_concern": "Generally not significant if low",
+      "high_concern": "Liver damage, hepatitis, fatty liver, medications"
+    },
+    {
+      "name": "AST",
+      "unit": "U/L",
+      "ranges": {
+        "general": { "low": 10, "high": 40 }
+      },
+      "low_concern": "Generally not significant if low",
+      "high_concern": "Liver disease, heart damage, muscle injury"
+    },
+    {
+      "name": "Total Cholesterol",
+      "unit": "mg/dL",
+      "ranges": {
+        "general": { "low": 0, "high": 200 }
+      },
+      "low_concern": "Malnutrition, hyperthyroidism, liver disease",
+      "high_concern": "Cardiovascular disease risk, atherosclerosis"
+    },
+    {
+      "name": "LDL Cholesterol",
+      "unit": "mg/dL",
+      "ranges": {
+        "general": { "low": 0, "high": 100 }
+      },
+      "low_concern": "Generally not clinically concerning if low",
+      "high_concern": "High cardiovascular risk, consider statin therapy"
+    },
+    {
+      "name": "HDL Cholesterol",
+      "unit": "mg/dL",
+      "ranges": {
+        "male":   { "low": 40, "high": 999 },
+        "female": { "low": 50, "high": 999 }
+      },
+      "low_concern": "Increased cardiovascular risk",
+      "high_concern": "Generally protective - not a concern"
+    },
+    {
+      "name": "Triglycerides",
+      "unit": "mg/dL",
+      "ranges": {
+        "general": { "low": 0, "high": 150 }
+      },
+      "low_concern": "Malnutrition, hyperthyroidism",
+      "high_concern": "Pancreatitis risk, cardiovascular risk, metabolic syndrome"
+    },
+    {
+      "name": "Ferritin",
+      "unit": "ng/mL",
+      "ranges": {
+        "male":   { "low": 30, "high": 400 },
+        "female": { "low": 13, "high": 150 }
+      },
+      "low_concern": "Iron deficiency anemia",
+      "high_concern": "Hemochromatosis, inflammation, liver disease"
+    },
+    {
+      "name": "Vitamin B12",
+      "unit": "pg/mL",
+      "ranges": {
+        "general": { "low": 200, "high": 900 }
+      },
+      "low_concern": "B12 deficiency: neurological symptoms, anemia",
+      "high_concern": "Liver disease, myeloproliferative disorder"
+    },
+    {
+      "name": "Vitamin D (25-OH)",
+      "unit": "ng/mL",
+      "ranges": {
+        "general": { "low": 30, "high": 100 }
+      },
+      "low_concern": "Deficiency: bone disease, immune dysfunction, depression",
+      "high_concern": "Toxicity: hypercalcemia, nausea, kidney damage"
+    },
+    {
+      "name": "CRP",
+      "unit": "mg/L",
+      "ranges": {
+        "general": { "low": 0, "high": 5.0 }
+      },
+      "low_concern": "Not clinically concerning if low",
+      "high_concern": "Inflammation, infection, autoimmune disease"
+    },
+    {
+      "name": "Uric Acid",
+      "unit": "mg/dL",
+      "ranges": {
+        "male":   { "low": 3.4, "high": 7.0 },
+        "female": { "low": 2.4, "high": 6.0 }
+      },
+      "low_concern": "Rare - Fanconi syndrome",
+      "high_concern": "Gout, kidney stones, metabolic syndrome"
+    }
+  ]
+}
