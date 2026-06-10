@@ -1,25 +1,15 @@
-"""
-app.py
-Main entry point for the AI Medical Assistant Streamlit app.
-Run with: streamlit run app.py
-"""
-
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import streamlit as st
 
-# ── Page config ──
 st.set_page_config(
     page_title="AI Medical Assistant",
     page_icon="🏥",
     layout="wide",
     initial_sidebar_state="expanded",
 )
-
-
-# ── Home page (defined BEFORE it is called) ──
 def _render_home():
     st.title("🏥 AI Medical Assistant")
     st.subheader("Your intelligent preliminary health screening tool")
