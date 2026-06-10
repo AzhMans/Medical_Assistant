@@ -1,8 +1,3 @@
-"""
-engine/symptom_engine.py
-Symptom-based condition classifier using Random Forest.
-"""
-
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -29,16 +24,9 @@ class SymptomEngine:
         )
         self._train()
 
-    # ──────────────────────────────────────────
     # Training
-    # ──────────────────────────────────────────
 
     def _train(self):
-        """
-        Build training data from the knowledge base.
-        Each condition becomes multiple synthetic training samples
-        with slight variation to help the model generalise.
-        """
         X, y = [], []
 
         for condition in self.conditions:
@@ -64,33 +52,15 @@ class SymptomEngine:
         self.model.fit(X, y)
 
     def _encode(self, symptoms):
-        """Convert a list of symptom strings to a binary feature vector."""
         vector = np.zeros(len(self.all_symptoms), dtype=int)
         for s in symptoms:
             if s in self.symptom_index:
                 vector[self.symptom_index[s]] = 1
         return vector
 
-    # ──────────────────────────────────────────
     # Prediction
-    # ──────────────────────────────────────────
 
     def predict(self, selected_symptoms, top_n=5):
-        """
-        Given a list of symptom strings, return top_n conditions
-        sorted by confidence score (highest first).
-
-        Returns a list of dicts:
-        {
-            "name": str,
-            "confidence": float (0-100),
-            "specialist": str,
-            "tests": list,
-            "severity": str,
-            "matched_symptoms": list,
-            "total_symptoms": int
-        }
-        """
         if not selected_symptoms:
             return []
 
