@@ -1,0 +1,17 @@
+# Create all files (PowerShell uses New-Item instead of touch)
+New-Item app.py
+New-Item requirements.txt
+New-Item README.md
+New-Item engine\symptom_engine.py
+New-Item engine\lab_engine.py
+New-Item engine\recommender.py
+New-Item ui\symptom_page.py
+New-Item ui\lab_page.py
+New-Item database\db.py
+New-Item tests\test_engines.py
+
+# Install dependencies
+pip install streamlit scikit-learn pandas numpy nltk openpyxl pytest
+
+# To run pytest.py
+python -m pytest tests/test_engines.py -v
