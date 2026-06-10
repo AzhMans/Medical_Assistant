@@ -1,9 +1,3 @@
-"""
-engine/recommender.py
-Combines symptom predictions and lab results into a final
-recommendation: which specialist to see and which tests to take.
-"""
-
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,14 +15,12 @@ In case of emergency, call your local emergency number immediately.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
 
-# Conditions where we allow a basic OTC suggestion (mild, self-resolving)
 OTC_SUGGESTIONS = {
     "Common Cold": "Rest, fluids, and over-the-counter decongestants (e.g. paracetamol for fever). Consult a doctor if symptoms worsen or last more than 10 days.",
     "Tension Headache": "Rest in a quiet dark room, stay hydrated, over-the-counter pain relievers (e.g. ibuprofen or paracetamol) may help. See a doctor if headaches are frequent.",
     "Allergic Rhinitis": "Over-the-counter antihistamines (e.g. cetirizine) may relieve symptoms. Avoid known allergens. See an Allergist for persistent symptoms.",
 }
 
-# Emergency symptoms that require immediate action
 EMERGENCY_SYMPTOMS = {
     "facial_drooping", "sudden_weakness", "speech_difficulty",
     "loss_of_consciousness", "seizures", "severe_chest_pain",
@@ -41,15 +33,9 @@ class Recommender:
         self.symptom_engine = SymptomEngine()
         self.lab_engine     = LabEngine()
 
-    # ──────────────────────────────────────────
     # Main recommendation entry points
-    # ──────────────────────────────────────────
 
     def recommend_from_symptoms(self, symptoms, top_n=3):
-        """
-        Given a list of symptom keys, return a full recommendation report.
-        """
-        # Emergency check first
         emergency = self._check_emergency(symptoms)
         if emergency:
             return self._emergency_report(emergency)
@@ -76,16 +62,12 @@ class Recommender:
         }
 
     def recommend_from_labs(self, entries, gender="general"):
-        """
-        Given lab entries [(test_name, value), ...], return a recommendation report.
-        """
         report    = self.lab_engine.interpret_multiple(entries, gender)
         abnormal  = report["abnormal"]
 
         specialists = []
         tests       = []
 
-        # Map abnormal lab tests → likely conditions → specialists
         for item in abnormal:
             mapped = self._map_lab_to_conditions(item["test"])
             for condition in mapped:
@@ -107,9 +89,6 @@ class Recommender:
         }
 
     def recommend_combined(self, symptoms, lab_entries, gender="general"):
-        """
-        Combine symptom + lab analysis into one unified report.
-        """
         emergency = self._check_emergency(symptoms)
         if emergency:
             return self._emergency_report(emergency)
@@ -117,7 +96,6 @@ class Recommender:
         symptom_report = self.recommend_from_symptoms(symptoms)
         lab_report     = self.recommend_from_labs(lab_entries, gender)
 
-        # Merge specialist lists (preserve order, no duplicates)
         all_specialists = list(dict.fromkeys(
             symptom_report.get("specialists", []) +
             lab_report.get("specialists", [])
@@ -137,12 +115,9 @@ class Recommender:
             "disclaimer":      DISCLAIMER,
         }
 
-    # ──────────────────────────────────────────
     # Helpers
-    # ──────────────────────────────────────────
 
     def _check_emergency(self, symptoms):
-        """Return list of emergency symptoms found, or empty list."""
         return [s for s in symptoms if s in EMERGENCY_SYMPTOMS]
 
     def _emergency_report(self, emergency_symptoms):
@@ -158,7 +133,6 @@ class Recommender:
         }
 
     def _collect_specialists(self, predictions):
-        """Deduplicated list of specialists from predictions."""
         seen = []
         for p in predictions:
             if p["specialist"] not in seen:
@@ -175,10 +149,6 @@ class Recommender:
         return seen[:8]  # cap at 8
 
     def _map_lab_to_conditions(self, test_name):
-        """
-        Return conditions that commonly involve this lab test.
-        Simple keyword matching against condition test lists.
-        """
         all_conditions = self.symptom_engine.conditions
         matched = []
         test_lower = test_name.lower()
@@ -188,11 +158,6 @@ class Recommender:
                     matched.append(c)
                     break
         return matched[:3]  # top 3 relevant conditions
-
-
-# ──────────────────────────────────────────────
-# Quick self-test  (run: python engine/recommender.py)
-# ──────────────────────────────────────────────
 
 if __name__ == "__main__":
     print("Initialising recommender (training model)...")
