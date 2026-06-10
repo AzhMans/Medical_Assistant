@@ -8,10 +8,7 @@ from engine.symptom_engine import SymptomEngine
 from engine.lab_engine import LabEngine
 from engine.recommender import Recommender
 
-
-# ──────────────────────────────────────────────
 # Fixtures (setup shared across tests)
-# ──────────────────────────────────────────────
 
 @pytest.fixture(scope="module")
 def db_conn():
