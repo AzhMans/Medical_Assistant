@@ -1,9 +1,3 @@
-"""
-engine/lab_engine.py
-Interprets user-entered lab results against standard reference ranges.
-Creates a fresh DB connection per call to avoid SQLite threading issues.
-"""
-
 import sys
 import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -22,9 +16,7 @@ class LabEngine:
         """Always return a fresh connection (thread-safe for Streamlit)."""
         return get_connection()
 
-    # ──────────────────────────────────────────
     # Main interpreter
-    # ──────────────────────────────────────────
 
     def interpret(self, test_name, value, gender="general"):
         conn = self._conn()
@@ -97,9 +89,7 @@ class LabEngine:
                 "total": len(results), "normal_count": len(results) - len(abnormal),
                 "abnormal_count": len(abnormal)}
 
-    # ──────────────────────────────────────────
     # Helpers for the UI
-    # ──────────────────────────────────────────
 
     def get_test_names(self):
         return sorted([t["name"] for t in self.all_tests])
