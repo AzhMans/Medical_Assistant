@@ -96,18 +96,9 @@ class SymptomEngine:
 
         return results
 
-    # ──────────────────────────────────────────
     # Dynamic question generation
-    # ──────────────────────────────────────────
 
     def get_next_question(self, confirmed_symptoms, ruled_out_symptoms=None):
-        """
-        Given symptoms already confirmed, return the single most
-        informative symptom to ask about next.
-
-        Strategy: find the symptom that appears most often in the
-        top candidate conditions and hasn't been asked yet.
-        """
         if ruled_out_symptoms is None:
             ruled_out_symptoms = []
 
@@ -136,7 +127,6 @@ class SymptomEngine:
         return best
 
     def get_questions_batch(self, confirmed_symptoms, ruled_out_symptoms=None, count=5):
-        """Return up to `count` next questions to ask."""
         if ruled_out_symptoms is None:
             ruled_out_symptoms = []
 
@@ -153,9 +143,7 @@ class SymptomEngine:
 
         return questions
 
-    # ──────────────────────────────────────────
     # Helpers
-    # ──────────────────────────────────────────
 
     def _get_condition_by_name(self, name):
         for c in self.conditions:
@@ -164,17 +152,13 @@ class SymptomEngine:
         return None
 
     def format_symptom_label(self, symptom):
-        """Convert snake_case symptom key to readable label."""
         return symptom.replace("_", " ").capitalize()
 
     def get_all_symptom_labels(self):
-        """Return list of (key, label) tuples for the UI."""
         return [(s, self.format_symptom_label(s)) for s in self.all_symptoms]
 
 
-# ──────────────────────────────────────────────
 # Quick self-test  (run: python engine/symptom_engine.py)
-# ──────────────────────────────────────────────
 
 if __name__ == "__main__":
     print("Training model... (this takes a few seconds)")
