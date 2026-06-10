@@ -1,9 +1,3 @@
-"""
-database/db.py
-Loads conditions.json and lab_ranges.json into SQLite.
-Uses a fresh connection per call to avoid threading issues with Streamlit.
-"""
-
 import sqlite3
 import json
 import os
@@ -14,7 +8,6 @@ LAB_RANGES_PATH = os.path.join(BASE_DIR, "data", "lab_ranges.json")
 
 
 def get_connection():
-    """Create and return a new SQLite in-memory connection with data loaded."""
     conn = sqlite3.connect(":memory:", check_same_thread=False)
     conn.row_factory = sqlite3.Row
     _create_tables(conn)
