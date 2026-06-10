@@ -1,0 +1,298 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import pytest
+from database.db import get_connection, get_all_conditions, get_all_symptoms, get_all_lab_tests, get_lab_test
+from engine.symptom_engine import SymptomEngine
+from engine.lab_engine import LabEngine
+from engine.recommender import Recommender
+
+
+# ──────────────────────────────────────────────
+# Fixtures (setup shared across tests)
+# ──────────────────────────────────────────────
+
+@pytest.fixture(scope="module")
+def db_conn():
+    """Single database connection for all DB tests."""
+    conn = get_connection()
+    yield conn
+    conn.close()
+
+
+@pytest.fixture(scope="module")
+def symptom_engine():
+    """Trained symptom engine (trained once for all tests)."""
+    return SymptomEngine()
+
+
+@pytest.fixture(scope="module")
+def lab_engine():
+    return LabEngine()
+
+
+@pytest.fixture(scope="module")
+def recommender():
+    return Recommender()
+
+
+# ──────────────────────────────────────────────
+# Database tests
+# ──────────────────────────────────────────────
+
+class TestDatabase:
+
+    def test_conditions_loaded(self, db_conn):
+        """Database must contain exactly 50 conditions."""
+        conditions = get_all_conditions(db_conn)
+        assert len(conditions) == 50, f"Expected 50 conditions, got {len(conditions)}"
+
+    def test_lab_tests_loaded(self, db_conn):
+        """Database must contain exactly 22 lab tests."""
+        lab_tests = get_all_lab_tests(db_conn)
+        assert len(lab_tests) == 22, f"Expected 22 lab tests, got {len(lab_tests)}"
+
+    def test_condition_has_required_fields(self, db_conn):
+        """Every condition must have all required fields."""
+        conditions = get_all_conditions(db_conn)
+        required = {"id", "name", "specialist", "severity", "tests", "symptoms"}
+        for c in conditions:
+            assert required.issubset(c.keys()), f"Condition {c.get('name')} is missing fields"
+
+    def test_condition_symptoms_are_lists(self, db_conn):
+        """Symptoms field must be a list for every condition."""
+        conditions = get_all_conditions(db_conn)
+        for c in conditions:
+            assert isinstance(c["symptoms"], list), f"{c['name']} symptoms is not a list"
+            assert len(c["symptoms"]) > 0, f"{c['name']} has no symptoms"
+
+    def test_severity_values_are_valid(self, db_conn):
+        """Severity must be one of: mild, moderate, severe."""
+        conditions = get_all_conditions(db_conn)
+        valid = {"mild", "moderate", "severe"}
+        for c in conditions:
+            assert c["severity"] in valid, f"{c['name']} has invalid severity: {c['severity']}"
+
+    def test_all_symptoms_returns_sorted_list(self, db_conn):
+        """get_all_symptoms must return a non-empty sorted list."""
+        symptoms = get_all_symptoms(db_conn)
+        assert len(symptoms) > 0
+        assert symptoms == sorted(symptoms), "Symptoms list is not sorted"
+
+    def test_lab_test_lookup_by_name(self, db_conn):
+        """Looking up a known lab test by name should return correct data."""
+        lab = get_lab_test(db_conn, "Glucose (Fasting)")
+        assert lab is not None
+        assert lab["unit"] == "mg/dL"
+        assert "general" in lab["ranges"]
+
+    def test_lab_test_lookup_case_insensitive(self, db_conn):
+        """Lab test lookup should be case-insensitive."""
+        lab = get_lab_test(db_conn, "tsh")
+        assert lab is not None
+        assert lab["name"] == "TSH"
+
+    def test_unknown_lab_test_returns_none(self, db_conn):
+        """Looking up a non-existent test should return None."""
+        lab = get_lab_test(db_conn, "NonExistentTest123")
+        assert lab is None
+
+
+# ──────────────────────────────────────────────
+# Symptom engine tests
+# ──────────────────────────────────────────────
+
+class TestSymptomEngine:
+
+    def test_model_trained(self, symptom_engine):
+        """Model should be trained and ready after init."""
+        assert symptom_engine.model is not None
+        assert symptom_engine.label_encoder is not None
+
+    def test_predict_returns_list(self, symptom_engine):
+        """Predict must return a list."""
+        results = symptom_engine.predict(["fatigue", "cough"])
+        assert isinstance(results, list)
+
+    def test_predict_flu_symptoms(self, symptom_engine):
+        """Classic flu symptoms should rank Influenza highly."""
+        symptoms = ["high_fever", "body_aches", "fatigue", "cough", "headache", "chills"]
+        results = symptom_engine.predict(symptoms, top_n=3)
+        assert len(results) > 0
+        top_names = [r["name"] for r in results]
+        assert "Influenza" in top_names, f"Expected Influenza in top results, got {top_names}"
+
+    def test_predict_confidence_range(self, symptom_engine):
+        """All confidence scores must be between 0 and 100."""
+        results = symptom_engine.predict(["fatigue", "fever", "cough"], top_n=5)
+        for r in results:
+            assert 0 <= r["confidence"] <= 100, f"Confidence out of range: {r['confidence']}"
+
+    def test_predict_result_has_required_fields(self, symptom_engine):
+        """Each prediction must contain all required fields."""
+        results = symptom_engine.predict(["fatigue", "dizziness"], top_n=3)
+        required = {"name", "confidence", "specialist", "tests", "severity", "matched_symptoms"}
+        for r in results:
+            assert required.issubset(r.keys()), f"Result missing fields: {r}"
+
+    def test_predict_empty_symptoms_returns_empty(self, symptom_engine):
+        """Empty symptom list should return empty results."""
+        results = symptom_engine.predict([])
+        assert results == []
+
+    def test_predict_diabetes_symptoms(self, symptom_engine):
+        """Diabetes symptoms should surface Type 2 Diabetes."""
+        symptoms = ["frequent_urination", "excessive_thirst", "fatigue", "blurred_vision"]
+        results = symptom_engine.predict(symptoms, top_n=5)
+        top_names = [r["name"] for r in results]
+        assert "Type 2 Diabetes" in top_names, f"Expected Type 2 Diabetes, got {top_names}"
+
+    def test_matched_symptoms_are_subset(self, symptom_engine):
+        """Matched symptoms must be a subset of the input symptoms."""
+        input_symptoms = ["fatigue", "cough", "fever", "headache"]
+        results = symptom_engine.predict(input_symptoms, top_n=3)
+        for r in results:
+            for s in r["matched_symptoms"]:
+                assert s in input_symptoms, f"Matched symptom '{s}' was not in input"
+
+    def test_next_question_returns_string(self, symptom_engine):
+        """get_next_question must return a symptom string."""
+        q = symptom_engine.get_next_question(["fatigue", "weight_gain"])
+        assert isinstance(q, str)
+        assert len(q) > 0
+
+    def test_next_question_not_already_asked(self, symptom_engine):
+        """Next question must not repeat an already confirmed symptom."""
+        confirmed = ["fatigue", "cough", "fever"]
+        q = symptom_engine.get_next_question(confirmed)
+        assert q not in confirmed
+
+    def test_format_symptom_label(self, symptom_engine):
+        """Snake_case symptoms should convert to readable labels."""
+        assert symptom_engine.format_symptom_label("shortness_of_breath") == "Shortness of breath"
+        assert symptom_engine.format_symptom_label("fatigue") == "Fatigue"
+
+    def test_all_symptom_labels_returns_tuples(self, symptom_engine):
+        """get_all_symptom_labels must return a list of (key, label) tuples."""
+        labels = symptom_engine.get_all_symptom_labels()
+        assert isinstance(labels, list)
+        assert len(labels) > 0
+        for item in labels:
+            assert isinstance(item, tuple)
+            assert len(item) == 2
+
+
+# ──────────────────────────────────────────────
+# Lab engine tests
+# ──────────────────────────────────────────────
+
+class TestLabEngine:
+
+    def test_low_hemoglobin_detected(self, lab_engine):
+        """Hemoglobin below female range should be flagged as low."""
+        result = lab_engine.interpret("Hemoglobin", 9.5, gender="female")
+        assert result["status"] == "low"
+
+    def test_high_glucose_detected(self, lab_engine):
+        """Glucose above normal range should be flagged as high."""
+        result = lab_engine.interpret("Glucose (Fasting)", 150)
+        assert result["status"] == "high"
+
+    def test_normal_tsh(self, lab_engine):
+        """TSH within normal range should be flagged as normal."""
+        result = lab_engine.interpret("TSH", 2.0)
+        assert result["status"] == "normal"
+
+    def test_result_has_required_fields(self, lab_engine):
+        """Interpretation result must contain all required fields."""
+        result = lab_engine.interpret("Hemoglobin", 13.0, gender="male")
+        required = {"test", "value", "unit", "status", "low", "high", "deviation", "concern", "message"}
+        assert required.issubset(result.keys())
+
+    def test_unknown_test_returns_error(self, lab_engine):
+        """Unknown test name should return an error dict."""
+        result = lab_engine.interpret("FakeTest999", 5.0)
+        assert "error" in result
+
+    def test_interpret_multiple_returns_report(self, lab_engine):
+        """interpret_multiple must return a complete report dict."""
+        entries = [("Hemoglobin", 9.0), ("Glucose (Fasting)", 55), ("TSH", 2.0)]
+        report = lab_engine.interpret_multiple(entries, gender="female")
+        assert "results" in report
+        assert "abnormal" in report
+        assert "summary" in report
+        assert report["total"] == 3
+
+    def test_abnormal_count_is_correct(self, lab_engine):
+        """Abnormal count should match actual abnormal results."""
+        entries = [("Hemoglobin", 9.0), ("TSH", 2.0), ("Glucose (Fasting)", 200)]
+        report = lab_engine.interpret_multiple(entries)
+        assert report["abnormal_count"] == 2
+        assert report["normal_count"] == 1
+
+    def test_deviation_is_positive(self, lab_engine):
+        """Deviation must always be a non-negative number."""
+        result = lab_engine.interpret("Glucose (Fasting)", 200)
+        assert result["deviation"] >= 0
+
+    def test_get_test_names_returns_list(self, lab_engine):
+        """get_test_names must return a non-empty sorted list."""
+        names = lab_engine.get_test_names()
+        assert isinstance(names, list)
+        assert len(names) == 22
+
+    def test_status_emoji(self, lab_engine):
+        """Status emoji must return correct symbols."""
+        assert lab_engine.status_emoji("normal") == "✅"
+        assert lab_engine.status_emoji("low") == "🔵"
+        assert lab_engine.status_emoji("high") == "🔴"
+
+
+# ──────────────────────────────────────────────
+# Recommender tests
+# ──────────────────────────────────────────────
+
+class TestRecommender:
+
+    def test_symptom_report_has_required_fields(self, recommender):
+        """Symptom recommendation must return all required fields."""
+        report = recommender.recommend_from_symptoms(["fatigue", "cough", "fever"])
+        required = {"type", "top_condition", "confidence", "severity", "predictions", "specialists", "disclaimer"}
+        assert required.issubset(report.keys())
+
+    def test_emergency_detected(self, recommender):
+        """Emergency symptoms must trigger emergency report type."""
+        report = recommender.recommend_from_symptoms(["facial_drooping", "sudden_weakness", "speech_difficulty"])
+        assert report["type"] == "emergency"
+        assert "112" in report["message"] or "911" in report["message"]
+
+    def test_lab_report_has_required_fields(self, recommender):
+        """Lab recommendation must return all required fields."""
+        entries = [("Hemoglobin", 9.0), ("Glucose (Fasting)", 180)]
+        report = recommender.recommend_from_labs(entries, gender="female")
+        required = {"type", "lab_report", "specialists", "disclaimer"}
+        assert required.issubset(report.keys())
+
+    def test_specialists_list_not_empty(self, recommender):
+        """Recommendations must always suggest at least one specialist."""
+        report = recommender.recommend_from_symptoms(["fatigue", "joint_pain", "fever"])
+        assert len(report["specialists"]) > 0
+
+    def test_disclaimer_always_present(self, recommender):
+        """Disclaimer must always be included in every report type."""
+        report1 = recommender.recommend_from_symptoms(["cough"])
+        report2 = recommender.recommend_from_labs([("TSH", 10)])
+        assert "disclaimer" in report1
+        assert "disclaimer" in report2
+
+    def test_combined_report_has_both_sections(self, recommender):
+        """Combined report must contain both symptom and lab sections."""
+        report = recommender.recommend_combined(
+            symptoms=["fatigue", "weight_gain"],
+            lab_entries=[("TSH", 8.5)],
+            gender="female"
+        )
+        assert report["type"] == "combined"
+        assert "symptom_section" in report
+        assert "lab_section" in report
